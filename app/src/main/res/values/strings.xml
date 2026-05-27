@@ -1,0 +1,30 @@
+<resources>
+    <string name="subtitle_text">Condividi, non sprecare</string>
+    <string name="start_button_desc">Inizia</string>
+    <string name="app_name">GiVeU</string>
+    <string name="title_home">HOME</string>
+    <string name="desc_add_button">Aggiungi</string>
+    <string name="desc_libro">Libro</string>
+    <string name="desc_casa">Casa</string>
+    <string name="desc_computer">Computer</string>
+    <string name="desc_makeup">Makeup</string>
+    <string name="desc_car">Macchina</string>
+    <string name="desc_dress">Dress</string>
+    <string name="desc_sport">Palestra</string>
+    <string name="desc_animali">Animali</string>
+    <string name="add_item">Aggiungi articolo</string>
+    <string name="back">Indietro</string>
+    <string name="add_photo">Aggiungi foto</string>
+    <string name="title">Titolo</string>
+    <string name="enter_title">Inserisci il titolo</string>
+    <string name="description">Descrizione</string>
+    <string name="enter_description">Inserisci la descrizione</string>
+    <string name="category">Categoria</string>
+    <string name="save">Salva</string>
+    <string name="phone_number">Numero di telefono</string>
+    <string name="enter_phone">Inserisci il numero di telefono</string>
+    <string name="location">Località</string>
+    <string name="enter_location">Inserisci la località</string>
+
+
+</resources>
