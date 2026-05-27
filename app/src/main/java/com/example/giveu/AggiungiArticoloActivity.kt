@@ -27,6 +27,8 @@ class AggiungiArticoloActivity : AppCompatActivity() {
     private lateinit var titleInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var categorySpinner: Spinner
+    private lateinit var phoneInput: EditText
+    private lateinit var locationInput: EditText
     private var imageUrl: String = ""
     private val viewModel: ArticleViewModel by viewModels()
 
@@ -58,6 +60,9 @@ class AggiungiArticoloActivity : AppCompatActivity() {
         titleInput = findViewById(R.id.titleInput)
         descriptionInput = findViewById(R.id.descriptionInput)
         categorySpinner = findViewById(R.id.categorySpinner)
+        phoneInput = findViewById(R.id.phoneInput)
+        locationInput = findViewById(R.id.locationInput)
+
 
         // Lista etichette visibili all'utente
         val spinnerLabels = listOf(
@@ -163,8 +168,8 @@ class AggiungiArticoloActivity : AppCompatActivity() {
             title = title,
             description = description,
             imageUrl = imageUrl,
-            phoneNumber = "0000000000", // Puoi sostituire con numero reale
-            location = "Posizione non disponibile", // Puoi gestire la geolocalizzazione
+            phoneNumber = phoneInput.text.toString(), // Puoi sostituire con numero reale
+            location = locationInput.text.toString(), // Puoi gestire la geolocalizzazione
             category = dbCategory
         )
 
