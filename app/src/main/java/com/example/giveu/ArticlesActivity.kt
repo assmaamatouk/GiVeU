@@ -24,19 +24,35 @@ class ArticlesActivity : AppCompatActivity() {
         setupBackButton()
 
         val categories = intent.getStringArrayExtra("categories")
+        val useOpenLibrary = intent.getBooleanExtra("useOpenLibrary", false)
 
         if (categories.isNullOrEmpty()) {
             Toast.makeText(this, "Nessuna categoria specificata.", Toast.LENGTH_LONG).show()
             return
         }
 
-        val normalizedCategories = categories.map { it.lowercase() }
+        if (useOpenLibrary) {
+            // Mostra prima i libri dal DB locale (inseriti dall'utente)
+            viewModel.getCombinedArticles("books").observe(this) { localBooks ->
+                adapter.updateData(localBooks)
+            }
 
-        viewModel.getCombinedArticles(*normalizedCategories.toTypedArray()).observe(this) { articles ->
-            if (articles.isEmpty()) {
-                Toast.makeText(this, "Nessun articolo trovato per queste categorie.", Toast.LENGTH_SHORT).show()
-            } else {
-                adapter.updateData(articles)
+            // Poi carica anche i libri da OpenLibrary
+            viewModel.fetchBooksFromOpenLibrary().observe(this) { apiBooks ->
+                if (apiBooks.isNotEmpty()) {
+                    val current = adapter.currentList()
+                    adapter.updateData(current + apiBooks)
+                }
+            }
+        } else {
+            // DummyJson per tutte le altre categorie
+            val normalizedCategories = categories.map { it.lowercase() }
+            viewModel.getCombinedArticles(*normalizedCategories.toTypedArray()).observe(this) { articles ->
+                if (articles.isEmpty()) {
+                    Toast.makeText(this, "Nessun articolo trovato.", Toast.LENGTH_SHORT).show()
+                } else {
+                    adapter.updateData(articles)
+                }
             }
         }
     }
@@ -54,4 +70,3 @@ class ArticlesActivity : AppCompatActivity() {
         }
     }
 }
-

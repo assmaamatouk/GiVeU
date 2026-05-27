@@ -21,36 +21,39 @@ class HomeActivity : AppCompatActivity() {
         }
 
         // Categorie con mapping coerente al DB / filtro
-        findViewById<LinearLayout>(R.id.categoryBook).setOnClickListener {
-            openArticlesActivity("books")
-        }
-
         findViewById<LinearLayout>(R.id.categoryComputer).setOnClickListener {
-            openArticlesActivity("laptops")
+            openArticlesActivity("laptops", "smartphones", "mobile-accessories")
         }
 
         findViewById<LinearLayout>(R.id.categoryDress).setOnClickListener {
-            openArticlesActivity("mens-shirts", "womens-dresses")
+            openArticlesActivity("mens-shirts", "womens-dresses", "mens-shoes", "womens-shoes")
         }
 
         findViewById<LinearLayout>(R.id.categoryHome).setOnClickListener {
-            openArticlesActivity("home-decoration")
+            openArticlesActivity("home-decoration", "furniture", "kitchen-accessories" )
         }
 
         findViewById<LinearLayout>(R.id.categoryMakeup).setOnClickListener {
-            openArticlesActivity("skincare")
+            openArticlesActivity("skincare", "beauty", "fragrances")
         }
 
         findViewById<LinearLayout>(R.id.categoryCar).setOnClickListener {
-            openArticlesActivity("automotive")
+            openArticlesActivity("automotive", "motorcycle")
         }
 
         findViewById<LinearLayout>(R.id.categorySport).setOnClickListener {
-            openArticlesActivity("sports") // o altro, in base a cosa hai nel DB
+            openArticlesActivity("sports-accessories") // o altro, in base a cosa hai nel DB
         }
 
         findViewById<LinearLayout>(R.id.categoryPet).setOnClickListener {
             openArticlesActivity("groceries") // esempio: alimenti animali, se usi "groceries"
+        }
+
+        findViewById<LinearLayout>(R.id.categoryBook).setOnClickListener {
+            val intent = Intent(this, ArticlesActivity::class.java)
+            intent.putExtra("categories", arrayOf("books"))
+            intent.putExtra("useOpenLibrary", true) // ← attiva OpenLibrary
+            startActivity(intent)
         }
     }
 

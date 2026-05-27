@@ -26,28 +26,13 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
         return articleDao.getArticlesByCategories(categories)
     }
 
-    // Restituisce articoli locali + API combinati per categorie specificate
+    // API 1: DummyJson + DB locale combinati
     fun getCombinedArticles(vararg categories: String): LiveData<List<Article>> {
         val result = MediatorLiveData<List<Article>>()
-
-        val mappedCategories = categories.map {
-            when (it.lowercase()) {
-                "libri" -> "libri"
-                "elettronica", "computer" -> "computer"
-                "vestiti" -> "vestiti"
-                "casa" -> "casa"
-                "makeup", "trucco" -> "trucco"
-                "animali", "accessori animali" -> "animali"
-                "sport", "accessori sport" -> "sport"
-                "auto", "accessori auto" -> "auto"
-                else -> it.lowercase()
-            }
-        }
-
+        val mappedCategories = categories.map { it.lowercase() }
         val dbArticles = articleDao.getArticlesByCategories(mappedCategories)
         val apiArticles = MutableLiveData<List<Article>>()
 
-        // Combina i dati da DB + API
         result.addSource(dbArticles) { dbList ->
             val apiList = apiArticles.value ?: emptyList()
             result.value = dbList + apiList
@@ -70,6 +55,25 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
             apiArticles.postValue(apiResults)
         }
 
+        return result
+    }
+
+    // API 2: OpenLibrary per i libri
+    fun fetchBooksFromOpenLibrary(): LiveData<List<Article>> {
+        val result = MutableLiveData<List<Article>>()
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val books = repository.fetchBooks("fiction")
+                // ← fix: loop normale invece di forEach
+                for (book in books) {
+                    articleDao.insert(book)
+                }
+                result.postValue(books)
+            } catch (e: Exception) {
+                Log.e("ArticleViewModel", "Errore OpenLibrary: $e")
+                result.postValue(emptyList())
+            }
+        }
         return result
     }
 }

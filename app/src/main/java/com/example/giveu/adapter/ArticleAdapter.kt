@@ -60,4 +60,5 @@ class ArticleAdapter(private var articleList: List<Article>) :
         articleList = newList
         notifyDataSetChanged()
     }
+    fun currentList(): List<Article> = articleList
 }
